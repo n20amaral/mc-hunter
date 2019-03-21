@@ -4,11 +4,20 @@ import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 public class Player implements Movable {
 
-    private Rectangle rectangle;
+    protected Rectangle rectangle;
     private Direction currentDirection;
     private Direction nextDirection;
     private boolean changingDirection = false;
     private int speed;
+    private boolean reborn;
+
+    public boolean isReborn() {
+        return reborn;
+    }
+
+    public void setReborn(boolean reborn) {
+        this.reborn = reborn;
+    }
 
     public Player(Rectangle rectangle) {
         this.rectangle = rectangle;
@@ -19,6 +28,11 @@ public class Player implements Movable {
 
     public void show() {
         rectangle.fill();
+    }
+
+
+    public void hide() {
+        rectangle.delete();
     }
 
     public void move() {

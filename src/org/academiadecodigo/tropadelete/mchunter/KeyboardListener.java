@@ -25,10 +25,21 @@ public class KeyboardListener implements KeyboardHandler {
             keyRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
             keyboard.addEventListener(keyRelease);
         }
+
+        KeyboardEvent r = new KeyboardEvent();
+        r.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        r.setKey(KeyboardEvent.KEY_R);
+        keyboard.addEventListener(r);
     }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
+
+        if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
+            player.setReborn(true);
+            return;
+        }
+
         Direction direction = Direction.getDirectionByKey(keyboardEvent.getKey());
         player.changeDirection(direction);
     }

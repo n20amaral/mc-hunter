@@ -2,6 +2,8 @@ package org.academiadecodigo.tropadelete.mchunter;
 
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
+import java.awt.font.GlyphMetrics;
+
 public class CollisionDetector {
     private Rectangle[][] walls;
 
@@ -55,4 +57,15 @@ public class CollisionDetector {
                 return true;
         }
     }
+
+    public boolean checkCollisionWithGhost(Movable rect1, Movable rect2) {
+        return rect1.getX() < rect2.getX() + Game.CELL_SIZE &&
+                rect1.getX() + Game.CELL_SIZE > rect2.getX() &&
+                rect1.getY() < rect2.getY() + Game.CELL_SIZE &&
+                rect1.getY() + Game.CELL_SIZE > rect2.getY();
+    }
+
+
+
+
 }
