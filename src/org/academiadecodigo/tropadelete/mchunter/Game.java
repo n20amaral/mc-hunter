@@ -9,6 +9,7 @@ import org.academiadecodigo.tropadelete.mchunter.gameobject.Wall;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.MovableGameObject;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
+
 import java.util.List;
 
 import static org.academiadecodigo.tropadelete.mchunter.Settings.Game.*;
@@ -21,6 +22,7 @@ public class Game {
     private Player player;
     private CollisionDetector collisionDetector;
     private boolean gameOver;
+    private boolean win;
     private boolean paused;
     private boolean restart;
 
@@ -32,6 +34,8 @@ public class Game {
     }
 
     public void start() {
+        int ghostsAlive = Settings.Ghost.GHOST_SPRITES.length;
+
         while (!gameOver) {
             if (paused) {
                 sleep();
@@ -41,7 +45,21 @@ public class Game {
             moveGameObject(player);
 
             for (Ghost ghost : ghosts) {
-                if(collisionDetector.checkCollision(player, ghost)) {
+                if (ghost.isHidden()) {
+                    continue;
+                }
+
+                if (collisionDetector.checkCollision(player, ghost)) {
+                    if (player.getCurrentDirection() == ghost.getCurrentDirection()) {
+                        ghost.hide();
+                        ghostsAlive--;
+                        if (ghostsAlive == 0) {
+                            win = true;
+                            gameOver = true;
+                            break;
+                        }
+                        continue;
+                    }
                     gameOver = true;
                     break;
                 }
@@ -49,7 +67,7 @@ public class Game {
                 ghost.randomlyChangeDirection();
                 moveGameObject(ghost);
 
-                if(collisionDetector.checkCollision(player, ghost)) {
+                if (collisionDetector.checkCollision(player, ghost)) {
                     gameOver = true;
                     break;
                 }
@@ -58,7 +76,7 @@ public class Game {
             sleep();
         }
 
-        showGameOver();
+        end();
         start();
     }
 
@@ -78,20 +96,25 @@ public class Game {
         for (int i = 0; i < object.getSpeed(); i++) {
             if (object.isChangingDirection() && !collisionDetector.checkWallCollision(object, object.getNextDirection())) {
                 object.moveToNextDirection();
-            } else if(!collisionDetector.checkWallCollision(object, object.getCurrentDirection())) {
+            } else if (!collisionDetector.checkWallCollision(object, object.getCurrentDirection())) {
                 object.move();
             }
         }
     }
 
-    private void showGameOver() {
-        Picture gameOver = new Picture((GAME_WIDTH - GAME_OVER_WIDTH) / 2, (GAME_HEIGHT - GAME_OVER_HEIGHT) / 2, GAME_OVER_IMG);
-        gameOver.draw();
+    private void end() {
+        String imgPath = win ? WIN_IMG : GAME_OVER_IMG;
+        int imgHeight = win ? WIN_HEIGHT : GAME_OVER_HEIGHT;
+        int imgWidth = win ? WIN_WIDTH : GAME_OVER_WIDTH;
+        Picture endImg = new Picture((GAME_WIDTH - imgWidth) / 2, (GAME_HEIGHT - imgHeight) / 2, imgPath);
+        endImg.draw();
+
         while (!restart) {
             sleep();
         }
+
         reset();
-        gameOver.delete();
+        endImg.delete();
     }
 
     private void reset() {
@@ -100,9 +123,11 @@ public class Game {
             ghost.reset();
         }
 
-        sleep();
         restart = false;
+        win = false;
         gameOver = false;
+
+        sleep();
     }
 
     private void sleep() {

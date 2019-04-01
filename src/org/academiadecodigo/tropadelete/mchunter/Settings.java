@@ -14,6 +14,10 @@ public class Settings {
         public static final String GAME_OVER_IMG = "resources/texts/gameover.png";
         public static final int GAME_OVER_WIDTH = 225;
         public static final int GAME_OVER_HEIGHT = 118;
+
+        public static final String WIN_IMG = "resources/texts/win.png";
+        public static final int WIN_WIDTH = 313;
+        public static final int WIN_HEIGHT = 232;
     }
 
     public static class Player {
@@ -26,14 +30,14 @@ public class Settings {
         public static final int GHOST_SPEED = 1;
         public static final int GHOST_X = 6 * Game.CELL_SIZE + Game.PADDING;
         public static final int GHOST_Y = 12 * Game.CELL_SIZE + Game.PADDING;
-        public static final double GHOST_CHANGE_DIRECTION_PROB = 0.1;
-        public static final double GHOST_CANCEL_DIRECTION_PROB = 0.2;
+        public static final double GHOST_CHANGE_DIRECTION_PROB = 0.05;
+        public static final double GHOST_CANCEL_DIRECTION_PROB = 0.15;
         public static final String[] GHOST_SPRITES = {
                 "Francisco.png",
-                "Ruben.png",
-                "Rudy.png",
-                "Seringas.png",
-                "Rui.png",
+//                "Ruben.png",
+//                "Rudy.png",
+//                "Seringas.png",
+//                "Rui.png",
                 "Nuno.png"
         };
     }

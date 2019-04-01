@@ -53,6 +53,7 @@ public abstract class MovableGameObject extends GameObject {
         this.rectangle.delete();
         this.rectangle.translate(dX, dY);
         this.rectangle.fill();
+        this.hidden = false;
         currentDirection = null;
         nextDirection = null;
     }

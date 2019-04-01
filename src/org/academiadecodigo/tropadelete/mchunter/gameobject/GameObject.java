@@ -5,9 +5,15 @@ import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 public abstract class GameObject {
     protected Rectangle rectangle;
+    protected boolean hidden;
 
     public GameObject(Rectangle rectangle) {
         this.rectangle = rectangle;
+    }
+
+    public void hide() {
+        rectangle.delete();
+        hidden = true;
     }
 
     public int getX() {
@@ -26,4 +32,7 @@ public abstract class GameObject {
         return rectangle.getHeight();
     }
 
+    public boolean isHidden() {
+        return hidden;
+    }
 }

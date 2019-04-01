@@ -11,10 +11,10 @@ public class Ghost extends MovableGameObject {
 
     public void randomlyChangeDirection(){
         if (Math.random() < GHOST_CHANGE_DIRECTION_PROB) {
-            if (Math.random() < GHOST_CANCEL_DIRECTION_PROB) {
-                super.cancelChangeDirection();
-            } else {
+            if (Math.random() > GHOST_CANCEL_DIRECTION_PROB) {
                 super.changeDirection(Direction.values()[(int)(Math.random() * Direction.values().length)]);
+            } else {
+                super.cancelChangeDirection();
             }
         }
     }

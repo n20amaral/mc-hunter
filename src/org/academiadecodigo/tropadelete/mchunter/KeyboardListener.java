@@ -41,12 +41,20 @@ public class KeyboardListener implements KeyboardHandler {
         pause.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         pause.setKey(KeyboardEvent.KEY_P);
         keyboard.addEventListener(pause);
+
+        KeyboardEvent quit = new KeyboardEvent();
+        quit.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        quit.setKey(KeyboardEvent.KEY_Q);
+        keyboard.addEventListener(quit);
     }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
         switch (keyboardEvent.getKey()) {
+            case KeyboardEvent.KEY_Q:
+                System.exit(1);
+                break;
             case KeyboardEvent.KEY_P:
                 if (!game.isGameOver()) {
                     game.switchPause();
