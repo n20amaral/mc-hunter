@@ -3,6 +3,7 @@ package org.academiadecodigo.tropadelete.mchunter;
 
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.GameObjectFactory;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.Wall;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
@@ -20,16 +21,23 @@ public class Game {
     private Player player;
     private CollisionDetector collisionDetector;
     private boolean gameOver;
+    private boolean paused;
+    private boolean restart;
 
     public void init() {
         loadBackground();
         loadGameObjects();
         collisionDetector = new CollisionDetector(walls);
-        new KeyboardListener(player).init();
+        new KeyboardListener(this, player).init();
     }
 
     public void start() {
         while (!gameOver) {
+            if (paused) {
+                sleep();
+                continue;
+            }
+
             moveGameObject(player);
 
             for (Ghost ghost : ghosts) {
@@ -47,14 +55,11 @@ public class Game {
                 }
             }
 
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            sleep();
         }
 
-        gameOver();
+        showGameOver();
+        start();
     }
 
     private void loadGameObjects() {
@@ -79,7 +84,48 @@ public class Game {
         }
     }
 
-    private void gameOver() {
+    private void showGameOver() {
+        Picture gameOver = new Picture((GAME_WIDTH - GAME_OVER_WIDTH) / 2, (GAME_HEIGHT - GAME_OVER_HEIGHT) / 2, GAME_OVER_IMG);
+        gameOver.draw();
+        while (!restart) {
+            sleep();
+        }
+        reset();
+        gameOver.delete();
+    }
 
+    private void reset() {
+        player.reset();
+        for (Ghost ghost : ghosts) {
+            ghost.reset();
+        }
+
+        sleep();
+        restart = false;
+        gameOver = false;
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void switchPause() {
+        this.paused = !this.paused;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setRestart(boolean restart) {
+        this.restart = restart;
     }
 }

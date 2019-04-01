@@ -25,4 +25,5 @@ public abstract class GameObject {
     public int getHeigth(){
         return rectangle.getHeight();
     }
+
 }

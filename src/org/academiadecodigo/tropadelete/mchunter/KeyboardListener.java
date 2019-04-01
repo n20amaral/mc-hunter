@@ -9,9 +9,11 @@ import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
 
 public class KeyboardListener implements KeyboardHandler {
 
-    Player player;
+    private Game game;
+    private Player player;
 
-    public KeyboardListener(Player player) {
+    public KeyboardListener(Game game, Player player) {
+        this.game = game;
         this.player = player;
     }
 
@@ -33,20 +35,36 @@ public class KeyboardListener implements KeyboardHandler {
         KeyboardEvent reset = new KeyboardEvent();
         reset.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
         reset.setKey(KeyboardEvent.KEY_R);
-
         keyboard.addEventListener(reset);
+
+        KeyboardEvent pause = new KeyboardEvent();
+        pause.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        pause.setKey(KeyboardEvent.KEY_P);
+        keyboard.addEventListener(pause);
     }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
-//        if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
-//            player.setReborn(true);
-//            return;
-//        }
+        switch (keyboardEvent.getKey()) {
+            case KeyboardEvent.KEY_P:
+                if (!game.isGameOver()) {
+                    game.switchPause();
+                }
+                break;
+            case KeyboardEvent.KEY_R:
+                if (game.isGameOver()) {
+                    game.setRestart(true);
+                }
+                break;
+            default:
+                if (!game.isPaused()) {
+                    Direction direction = Direction.getDirectionByKey(keyboardEvent.getKey());
+                    player.changeDirection(direction);
+                }
+                break;
+        }
 
-        Direction direction = Direction.getDirectionByKey(keyboardEvent.getKey());
-        player.changeDirection(direction);
     }
 
     @Override

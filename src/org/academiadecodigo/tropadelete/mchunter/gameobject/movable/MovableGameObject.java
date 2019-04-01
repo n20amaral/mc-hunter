@@ -8,10 +8,14 @@ public abstract class MovableGameObject extends GameObject {
     private boolean isChangingDirection;
     private Direction currentDirection;
     private Direction nextDirection;
+    private int initialX;
+    private int initialY;
 
     public MovableGameObject(Rectangle rectangle, int speed) {
         super(rectangle);
         this.speed = speed;
+        this.initialX = rectangle.getX();
+        this.initialY = rectangle.getY();
     }
 
     public void moveToNextDirection() {
@@ -41,6 +45,16 @@ public abstract class MovableGameObject extends GameObject {
     public void cancelChangeDirection() {
         isChangingDirection = false;
         nextDirection = currentDirection;
+    }
+
+    public void reset() {
+        int dX = initialX - rectangle.getX();
+        int dY = initialY - rectangle.getY();
+        this.rectangle.delete();
+        this.rectangle.translate(dX, dY);
+        this.rectangle.fill();
+        currentDirection = null;
+        nextDirection = null;
     }
 
     public int getSpeed() {

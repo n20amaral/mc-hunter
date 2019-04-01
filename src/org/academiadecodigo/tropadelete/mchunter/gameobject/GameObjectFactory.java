@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.academiadecodigo.tropadelete.mchunter.Settings.Game.*;
 import static org.academiadecodigo.tropadelete.mchunter.Settings.Ghost.*;
+import static org.academiadecodigo.tropadelete.mchunter.Settings.Player.*;
 
 public class GameObjectFactory {
 
@@ -24,7 +25,7 @@ public class GameObjectFactory {
         List<Ghost> ghosts = new LinkedList<>();
 
         for (int i = 0; i < GHOST_SPRITES.length; i++) {
-            Rectangle rectangle = new Rectangle(PADDING + CELL_SIZE + (i * (CELL_SIZE * 2)), PADDING + CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            Rectangle rectangle = new Rectangle(GHOST_X + (i * (CELL_SIZE * 2)), GHOST_Y, CELL_SIZE, CELL_SIZE);
             rectangle.setColor(Color.BLUE);
             rectangle.fill();
             ghosts.add(new Ghost(rectangle));
@@ -36,7 +37,7 @@ public class GameObjectFactory {
 
     public Player createPlayer() {
 
-        Rectangle rectangle = new Rectangle(PADDING + CELL_SIZE, PADDING + CELL_SIZE * (GAME_SIZE - 2), CELL_SIZE, CELL_SIZE);
+        Rectangle rectangle = new Rectangle(PLAYER_X, PLAYER_Y, CELL_SIZE, CELL_SIZE);
         rectangle.setColor(Color.YELLOW);
         rectangle.fill();
         return new Player(rectangle);
