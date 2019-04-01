@@ -8,10 +8,9 @@ import org.academiadecodigo.tropadelete.mchunter.gameobject.Wall;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.MovableGameObject;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
-
 import java.util.List;
 
-import static org.academiadecodigo.tropadelete.mchunter.GameSettings.*;
+import static org.academiadecodigo.tropadelete.mchunter.Settings.Game.*;
 
 public class Game {
 
@@ -54,6 +53,8 @@ public class Game {
                 e.printStackTrace();
             }
         }
+
+        gameOver();
     }
 
     private void loadGameObjects() {
@@ -76,5 +77,9 @@ public class Game {
                 object.move();
             }
         }
+    }
+
+    private void gameOver() {
+
     }
 }

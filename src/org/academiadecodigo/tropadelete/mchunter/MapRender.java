@@ -5,8 +5,7 @@ import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 import java.io.*;
 
-import static org.academiadecodigo.tropadelete.mchunter.GameSettings.CELL_SIZE;
-import static org.academiadecodigo.tropadelete.mchunter.GameSettings.GAME_SIZE;
+import static org.academiadecodigo.tropadelete.mchunter.Settings.Game.*;
 
 public class MapRender {
 

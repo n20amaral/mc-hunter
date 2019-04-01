@@ -6,7 +6,7 @@ import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.MovableGameObject;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
 
-import static org.academiadecodigo.tropadelete.mchunter.GameSettings.*;
+import static org.academiadecodigo.tropadelete.mchunter.Settings.Game.*;
 
 public class CollisionDetector {
 

@@ -2,7 +2,6 @@ package org.academiadecodigo.tropadelete.mchunter.gameobject;
 
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
-import org.academiadecodigo.tropadelete.mchunter.GameSettings;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
 
@@ -12,17 +11,20 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.academiadecodigo.tropadelete.mchunter.Settings.Game.*;
+import static org.academiadecodigo.tropadelete.mchunter.Settings.Ghost.*;
+
 public class GameObjectFactory {
 
     public Wall[][] createWalls() {
-        return load(GameSettings.MAP_PATH);
+        return load(MAP_PATH);
     }
 
     public List<Ghost> createGhosts() {
         List<Ghost> ghosts = new LinkedList<>();
 
-        for (int i = 0; i < GameSettings.GHOST_SPRITES.length; i++) {
-            Rectangle rectangle = new Rectangle(GameSettings.PADDING + GameSettings.CELL_SIZE + (i * (GameSettings.CELL_SIZE * 2)), GameSettings.PADDING + GameSettings.CELL_SIZE, GameSettings.CELL_SIZE, GameSettings.CELL_SIZE);
+        for (int i = 0; i < GHOST_SPRITES.length; i++) {
+            Rectangle rectangle = new Rectangle(PADDING + CELL_SIZE + (i * (CELL_SIZE * 2)), PADDING + CELL_SIZE, CELL_SIZE, CELL_SIZE);
             rectangle.setColor(Color.BLUE);
             rectangle.fill();
             ghosts.add(new Ghost(rectangle));
@@ -34,14 +36,14 @@ public class GameObjectFactory {
 
     public Player createPlayer() {
 
-        Rectangle rectangle = new Rectangle(GameSettings.PADDING + GameSettings.CELL_SIZE, GameSettings.PADDING + GameSettings.CELL_SIZE * (GameSettings.GAME_SIZE - 2), GameSettings.CELL_SIZE, GameSettings.CELL_SIZE);
+        Rectangle rectangle = new Rectangle(PADDING + CELL_SIZE, PADDING + CELL_SIZE * (GAME_SIZE - 2), CELL_SIZE, CELL_SIZE);
         rectangle.setColor(Color.YELLOW);
         rectangle.fill();
         return new Player(rectangle);
     }
 
     public static Wall[][] load(String path) {
-        Wall[][] walls = new Wall[GameSettings.GAME_SIZE][GameSettings.GAME_SIZE];
+        Wall[][] walls = new Wall[GAME_SIZE][GAME_SIZE];
         BufferedReader reader = null;
 
         try {
@@ -52,7 +54,7 @@ public class GameObjectFactory {
             for (int row = 0; (line = reader.readLine()) != null; row++) {
                 for (int col = 0; col < line.length(); col++) {
                     if (line.charAt(col) == '1') {
-                        Rectangle rectangle = new  Rectangle(GameSettings.PADDING + col * GameSettings.CELL_SIZE, GameSettings.PADDING + row * GameSettings.CELL_SIZE, GameSettings.CELL_SIZE, GameSettings.CELL_SIZE);
+                        Rectangle rectangle = new  Rectangle(PADDING + col * CELL_SIZE, PADDING + row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                         rectangle.setColor(Color.PINK);
                         rectangle.fill();
                         walls[row][col] = new Wall(rectangle);
