@@ -4,6 +4,8 @@ import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Direction;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
 
 public class KeyboardListener implements KeyboardHandler {
 
@@ -16,29 +18,32 @@ public class KeyboardListener implements KeyboardHandler {
     public void init() {
         Keyboard keyboard = new Keyboard(this);
         for (Direction direction : Direction.values()) {
-            KeyboardEvent event = new KeyboardEvent();
-            event.setKey(direction.getKey());
-            event.setKeyboardEventType(direction.getEventType());
-            keyboard.addEventListener(event);
-            KeyboardEvent keyRelease = new KeyboardEvent();
-            keyRelease.setKey(direction.getKey());
-            keyRelease.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
-            keyboard.addEventListener(keyRelease);
+            KeyboardEvent keyPressedEvent = new KeyboardEvent();
+            keyPressedEvent.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+            keyPressedEvent.setKey(direction.getKey());
+
+            KeyboardEvent keyReleasedEvent = new KeyboardEvent();
+            keyReleasedEvent.setKeyboardEventType(KeyboardEventType.KEY_RELEASED);
+            keyPressedEvent.setKey(direction.getKey());
+
+            keyboard.addEventListener(keyPressedEvent);
+            keyboard.addEventListener(keyReleasedEvent);
         }
 
-        KeyboardEvent r = new KeyboardEvent();
-        r.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        r.setKey(KeyboardEvent.KEY_R);
-        keyboard.addEventListener(r);
+        KeyboardEvent reset = new KeyboardEvent();
+        reset.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        reset.setKey(KeyboardEvent.KEY_R);
+
+        keyboard.addEventListener(reset);
     }
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
 
-        if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
-            player.setReborn(true);
-            return;
-        }
+//        if (keyboardEvent.getKey() == KeyboardEvent.KEY_R) {
+//            player.setReborn(true);
+//            return;
+//        }
 
         Direction direction = Direction.getDirectionByKey(keyboardEvent.getKey());
         player.changeDirection(direction);

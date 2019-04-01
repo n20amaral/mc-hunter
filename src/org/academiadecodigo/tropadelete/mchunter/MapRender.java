@@ -4,8 +4,9 @@ import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
+
+import static org.academiadecodigo.tropadelete.mchunter.GameSettings.CELL_SIZE;
+import static org.academiadecodigo.tropadelete.mchunter.GameSettings.GAME_SIZE;
 
 public class MapRender {
 
@@ -13,8 +14,8 @@ public class MapRender {
         FileWriter writer = null;
         try {
             writer = new FileWriter(path);
-            for (int i = 0; i < Game.GAME_SIZE; i++) {
-                for (int j = 0; j < Game.GAME_SIZE; j++) {
+            for (int i = 0; i < GAME_SIZE; i++) {
+                for (int j = 0; j < GAME_SIZE; j++) {
                     writer.write('0');
                 }
                 writer.write('\n');
@@ -33,7 +34,7 @@ public class MapRender {
     }
 
     public static Rectangle[][] load(String path) {
-        Rectangle[][] walls = new Rectangle[Game.GAME_SIZE][Game.GAME_SIZE];
+        Rectangle[][] walls = new Rectangle[GAME_SIZE][GAME_SIZE];
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(path));
@@ -43,7 +44,7 @@ public class MapRender {
             for (int row = 0; (line = reader.readLine()) != null; row++) {
                 for (int col = 0; col < line.length(); col++) {
                     if (line.charAt(col) == '1') {
-                        Rectangle r = new  Rectangle(10 + col * Game.CELL_SIZE, 10 + row * Game.CELL_SIZE, Game.CELL_SIZE, Game.CELL_SIZE);
+                        Rectangle r = new  Rectangle(10 + col * CELL_SIZE, 10 + row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                         r.setColor(Color.PINK);
                         r.fill();
                         walls[row][col] = r;

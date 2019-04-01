@@ -1,71 +1,78 @@
 package org.academiadecodigo.tropadelete.mchunter;
 
-import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.Wall;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Direction;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.MovableGameObject;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
 
-import java.awt.font.GlyphMetrics;
+import static org.academiadecodigo.tropadelete.mchunter.GameSettings.*;
 
 public class CollisionDetector {
-    private Rectangle[][] walls;
 
-    public CollisionDetector(Rectangle[][] walls) {
+    private Wall[][] walls;
+
+    public CollisionDetector(Wall[][] walls) {
         this.walls = walls;
     }
 
-    public boolean checkCollisionWithWalls(Movable movable, Direction direction) {
+    public boolean checkCollision(Player player, Ghost ghost) {
+        return player.getX() < ghost.getX() + ghost.getWidth() &&
+                player.getX() + player.getWidth() > ghost.getX() &&
+                player.getY() < ghost.getY() + ghost.getHeigth() &&
+                player.getY() + player.getHeigth() > ghost.getY();
+    }
+
+    public boolean checkWallCollision(MovableGameObject movable, Direction direction) {
         if (direction == null) {
             return true;
         }
 
         boolean detected = false;
 
-        int col = movable.getCol() + direction.getdX();
-        int row = movable.getRow() + direction.getdY();
+        int col = getColFromX(movable.getX()) + direction.getdX();
+        int row = getRowFromY(movable.getY()) + direction.getdY();
 
         detected = checkCollisionWithSingleWall(walls[row][col], movable, direction);
 
+        int startX = getColFromX(movable.getX()) * CELL_SIZE + PADDING;
+        int startY = getRowFromY(movable.getY()) * CELL_SIZE + PADDING;
 
-        int startX = movable.getCol() * Game.CELL_SIZE + Game.PADDING;
-        int startY = movable.getRow() * Game.CELL_SIZE + Game.PADDING;
-
-        int adjX = movable.getNextDirection().getdY() != 0 && movable.getX() > startX ? col + 1 : col;
-        int adjY = movable.getNextDirection().getdX() != 0 && movable.getY() > startY ? row + 1 : row;
+        int adjCol = direction.getdY() != 0 && movable.getX() > startX ? col + 1 : col;
+        int adjRow = direction.getdX() != 0 && movable.getY() > startY ? row + 1 : row;
 
 
-        if (adjY != row || adjX != col) {
-            detected = detected || checkCollisionWithSingleWall(walls[adjY][adjX], movable, direction);
+        if (adjRow != row || adjCol != col) {
+            detected = detected || checkCollisionWithSingleWall(walls[adjRow][adjCol], movable, direction);
         }
 
         return detected;
     }
 
-    private boolean checkCollisionWithSingleWall(Rectangle wall, Movable movable, Direction direction) {
+    private boolean checkCollisionWithSingleWall(Wall wall, MovableGameObject movable, Direction direction) {
         if (wall == null) {
             return false;
         }
 
-
         switch (direction) {
             case LEFT:
-                return movable.getX() - movable.getSpeed() < wall.getX() + Game.CELL_SIZE;
+                return movable.getX() + direction.getdX() < wall.getX() + wall.getWidth();
             case RIGHT:
-                return movable.getX() + Game.CELL_SIZE + movable.getSpeed() > wall.getX();
+                return movable.getX() + movable.getWidth() + direction.getdX() > wall.getX();
             case DOWN:
-                return movable.getY() + Game.CELL_SIZE + movable.getSpeed() > wall.getY();
+                return movable.getY() + movable.getHeigth() + direction.getdY() > wall.getY();
             case UP:
-                return movable.getY() - movable.getSpeed() < wall.getY() + Game.CELL_SIZE;
+                return movable.getY() + direction.getdY() < wall.getY() + wall.getHeigth();
             default:
                 return true;
         }
     }
 
-    public boolean checkCollisionWithGhost(Movable rect1, Movable rect2) {
-        return rect1.getX() < rect2.getX() + Game.CELL_SIZE &&
-                rect1.getX() + Game.CELL_SIZE > rect2.getX() &&
-                rect1.getY() < rect2.getY() + Game.CELL_SIZE &&
-                rect1.getY() + Game.CELL_SIZE > rect2.getY();
+    private int getColFromX(int x) {
+        return (x - PADDING) / CELL_SIZE;
     }
 
-
-
-
+    private int getRowFromY(int y) {
+        return (y - PADDING) / CELL_SIZE;
+    }
 }

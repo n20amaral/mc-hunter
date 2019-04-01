@@ -1,5 +1,6 @@
 package org.academiadecodigo.tropadelete.mchunter;
 
+
 public class McHunter {
 
     public static void main(String[] args) {
@@ -7,5 +8,4 @@ public class McHunter {
         game.init();
         game.start();
     }
-
 }
