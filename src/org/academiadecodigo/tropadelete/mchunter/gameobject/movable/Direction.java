@@ -1,6 +1,7 @@
 package org.academiadecodigo.tropadelete.mchunter.gameobject.movable;
 
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.tropadelete.mchunter.Settings;
 
 public enum Direction {
     LEFT(KeyboardEvent.KEY_LEFT, -1, 0),

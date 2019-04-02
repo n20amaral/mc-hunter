@@ -1,7 +1,7 @@
 package org.academiadecodigo.tropadelete.mchunter.gameobject;
 
-import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
 
@@ -25,10 +25,9 @@ public class GameObjectFactory {
         List<Ghost> ghosts = new LinkedList<>();
 
         for (int i = 0; i < GHOST_SPRITES.length; i++) {
-            Rectangle rectangle = new Rectangle(GHOST_X + (i * (CELL_SIZE * 2)), GHOST_Y, CELL_SIZE, CELL_SIZE);
-            rectangle.setColor(Color.BLUE);
-            rectangle.fill();
-            ghosts.add(new Ghost(rectangle));
+            Picture sprite = new Picture(GHOST_X + (i * (CELL_SIZE * 2)), GHOST_Y, GHOST_SPRITES[i][0]);
+            sprite.draw();
+            ghosts.add(new Ghost(sprite, GHOST_SPRITES[i]));
         }
 
         return ghosts;
@@ -37,10 +36,9 @@ public class GameObjectFactory {
 
     public Player createPlayer() {
 
-        Rectangle rectangle = new Rectangle(PLAYER_X, PLAYER_Y, CELL_SIZE, CELL_SIZE);
-        rectangle.setColor(Color.YELLOW);
-        rectangle.fill();
-        return new Player(rectangle);
+        Picture sprite = new Picture(PLAYER_X, PLAYER_Y, PLAYER_SPRITES[0]);
+        sprite.draw();
+        return new Player(sprite, PLAYER_SPRITES);
     }
 
     public static Wall[][] load(String path) {
@@ -56,7 +54,7 @@ public class GameObjectFactory {
                 for (int col = 0; col < line.length(); col++) {
                     if (line.charAt(col) == '1') {
                         Rectangle rectangle = new  Rectangle(PADDING + col * CELL_SIZE, PADDING + row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-                        rectangle.setColor(Color.PINK);
+                        rectangle.setColor(WALL_COLOR);
                         rectangle.fill();
                         walls[row][col] = new Wall(rectangle);
                     }

@@ -1,12 +1,12 @@
 package org.academiadecodigo.tropadelete.mchunter.gameobject.movable;
 
-import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 
 import static org.academiadecodigo.tropadelete.mchunter.Settings.Ghost.*;
 
 public class Ghost extends MovableGameObject {
-    public Ghost(Rectangle rectangle) {
-        super(rectangle, GHOST_SPEED);
+    public Ghost(Picture sprite, String[] spritePaths) {
+        super(sprite, GHOST_SPEED, spritePaths);
     }
 
     public void randomlyChangeDirection(){

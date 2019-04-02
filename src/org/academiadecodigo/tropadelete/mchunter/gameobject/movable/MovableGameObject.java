@@ -1,9 +1,12 @@
 package org.academiadecodigo.tropadelete.mchunter.gameobject.movable;
 
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.GameObject;
 
 public abstract class MovableGameObject extends GameObject {
+    private Picture sprite;
+    private String[] spritePaths;
     private int speed;
     private boolean isChangingDirection;
     private Direction currentDirection;
@@ -11,11 +14,13 @@ public abstract class MovableGameObject extends GameObject {
     private int initialX;
     private int initialY;
 
-    public MovableGameObject(Rectangle rectangle, int speed) {
-        super(rectangle);
+    public MovableGameObject(Picture sprite, int speed, String[] spritePaths) {
+        super(sprite);
+        this.sprite = sprite;
+        this.spritePaths = spritePaths;
         this.speed = speed;
-        this.initialX = rectangle.getX();
-        this.initialY = rectangle.getY();
+        this.initialX = sprite.getX();
+        this.initialY = sprite.getY();
     }
 
     public void moveToNextDirection() {
@@ -25,6 +30,7 @@ public abstract class MovableGameObject extends GameObject {
 
         currentDirection = nextDirection;
         isChangingDirection = false;
+        sprite.load(spritePaths[nextDirection.ordinal()]);
         move();
     }
 
@@ -33,8 +39,8 @@ public abstract class MovableGameObject extends GameObject {
             return;
         }
 
-        rectangle.translate(currentDirection.getdX(), currentDirection.getdY());
-        rectangle.fill();
+        sprite.translate(currentDirection.getdX(), currentDirection.getdY());
+        sprite.draw();
     }
 
     public void changeDirection(Direction direction) {
@@ -48,12 +54,12 @@ public abstract class MovableGameObject extends GameObject {
     }
 
     public void reset() {
-        int dX = initialX - rectangle.getX();
-        int dY = initialY - rectangle.getY();
-        this.rectangle.delete();
-        this.rectangle.translate(dX, dY);
-        this.rectangle.fill();
-        this.hidden = false;
+        int dX = initialX - sprite.getX();
+        int dY = initialY - sprite.getY();
+        sprite.delete();
+        sprite.translate(dX, dY);
+        sprite.draw();
+        hidden = false;
         currentDirection = null;
         nextDirection = null;
     }

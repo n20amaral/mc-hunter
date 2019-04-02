@@ -1,6 +1,7 @@
 package org.academiadecodigo.tropadelete.mchunter;
 
 
+import org.academiadecodigo.simplegraphics.graphics.Canvas;
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
@@ -36,11 +37,14 @@ public class Game {
     public void start() {
         int ghostsAlive = Settings.Ghost.GHOST_SPRITES.length;
 
+        showInitialScreen();
+
         while (!gameOver) {
             if (paused) {
                 sleep();
                 continue;
             }
+
 
             moveGameObject(player);
 
@@ -87,9 +91,50 @@ public class Game {
     }
 
     private void loadBackground() {
+
+
+        Picture background = new Picture(PADDING, PADDING, BACKGROUND_IMG);
+        background.draw();
+        background.grow(PADDING * 4, PADDING * 4);
         Rectangle canvas = new Rectangle(PADDING, PADDING, GAME_SIZE * CELL_SIZE, GAME_SIZE * CELL_SIZE);
-        canvas.setColor(Color.BLACK);
+        canvas.setColor(BACKGROÛND_COLOR);
         canvas.fill();
+    }
+
+    private void showInitialScreen() {
+        Picture title = new Picture((WINDOW_WIDTH - TITLE_WIDTH) / 2, TITLE_HEIGHT * 2, TITLE_IMG);
+        Picture start = new Picture((WINDOW_WIDTH - START_WIDTH) / 2, (WINDOW_HEIGHT - START_HEIGHT) / 2, START_IMG);
+        Picture intro = new Picture(0 - INTRO_WIDTH, WINDOW_HEIGHT - INTRO_HEIGHT * 2, INTRO_SPRITES[0]);
+
+        boolean movingIntroToRight = true;
+
+
+        title.draw();
+        start.draw();
+
+        while (player.getNextDirection() == null) {
+            int dX = movingIntroToRight ? 1 : -1;
+
+            if (movingIntroToRight && intro.getX() > WINDOW_WIDTH) {
+                movingIntroToRight = false;
+                intro.load(INTRO_SPRITES[1]);
+                continue;
+            }
+
+            if (!movingIntroToRight && intro.getX() < 0 - INTRO_WIDTH) {
+                movingIntroToRight = true;
+                intro.load(INTRO_SPRITES[0]);
+                continue;
+            }
+
+            intro.translate(dX, 0);
+            intro.draw();
+            sleep();
+        }
+
+        title.delete();
+        start.delete();
+        intro.delete();
     }
 
     private void moveGameObject(MovableGameObject object) {
@@ -106,7 +151,7 @@ public class Game {
         String imgPath = win ? WIN_IMG : GAME_OVER_IMG;
         int imgHeight = win ? WIN_HEIGHT : GAME_OVER_HEIGHT;
         int imgWidth = win ? WIN_WIDTH : GAME_OVER_WIDTH;
-        Picture endImg = new Picture((GAME_WIDTH - imgWidth) / 2, (GAME_HEIGHT - imgHeight) / 2, imgPath);
+        Picture endImg = new Picture((WINDOW_WIDTH - imgWidth) / 2, (WINDOW_HEIGHT - imgHeight) / 2, imgPath);
         endImg.draw();
 
         while (!restart) {

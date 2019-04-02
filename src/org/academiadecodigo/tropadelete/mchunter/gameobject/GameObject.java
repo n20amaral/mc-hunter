@@ -1,35 +1,34 @@
 package org.academiadecodigo.tropadelete.mchunter.gameobject;
 
-
-import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.graphics.Shape;
 
 public abstract class GameObject {
-    protected Rectangle rectangle;
+    private Shape shape;
     protected boolean hidden;
 
-    public GameObject(Rectangle rectangle) {
-        this.rectangle = rectangle;
+    public GameObject(Shape shape) {
+        this.shape = shape;
     }
 
     public void hide() {
-        rectangle.delete();
+        shape.delete();
         hidden = true;
     }
 
     public int getX() {
-        return rectangle.getX();
+        return shape.getX();
     }
 
     public int getY(){
-        return rectangle.getY();
+        return shape.getY();
     }
 
     public int getWidth() {
-        return rectangle.getWidth();
+        return shape.getWidth();
     }
 
     public int getHeigth(){
-        return rectangle.getHeight();
+        return shape.getHeight();
     }
 
     public boolean isHidden() {
