@@ -39,6 +39,11 @@ public class Game {
 
         showInitialScreen();
 
+        Sound sound = new Sound(BACKGROUND_SOUND);
+        Sound ping = new Sound(PING_SOUND);
+
+        sound.setLoop(-1);
+        sound.play(true);
         while (!gameOver) {
             if (paused) {
                 sleep();
@@ -55,6 +60,7 @@ public class Game {
 
                 if (collisionDetector.checkCollision(player, ghost)) {
                     if (player.getCurrentDirection() == ghost.getCurrentDirection()) {
+                        ping.play(true);
                         ghost.hide();
                         ghostsAlive--;
                         if (ghostsAlive == 0) {
@@ -72,6 +78,9 @@ public class Game {
                 moveGameObject(ghost);
 
                 if (collisionDetector.checkCollision(player, ghost)) {
+                    for (int i = 0; i < CELL_SIZE / 6; i++) {
+                        ghost.move();
+                    }
                     gameOver = true;
                     break;
                 }
@@ -79,7 +88,7 @@ public class Game {
 
             sleep();
         }
-
+        sound.stop();
         end();
         start();
     }
@@ -102,12 +111,13 @@ public class Game {
     }
 
     private void showInitialScreen() {
+        Sound sound = new Sound(INTRO_SOUND);
         Picture title = new Picture((WINDOW_WIDTH - TITLE_WIDTH) / 2, TITLE_HEIGHT * 2, TITLE_IMG);
-        Picture start = new Picture((WINDOW_WIDTH - START_WIDTH) / 2, (WINDOW_HEIGHT - START_HEIGHT) / 2, START_IMG);
+        Picture start = new Picture((WINDOW_WIDTH - START_WIDTH) / 2, WINDOW_HEIGHT - WINDOW_HEIGHT / 3, START_IMG);
         Picture intro = new Picture(0 - INTRO_WIDTH, WINDOW_HEIGHT - INTRO_HEIGHT * 2, INTRO_SPRITES[0]);
-
         boolean movingIntroToRight = true;
 
+        sound.play(true);
 
         title.draw();
         start.draw();
@@ -135,6 +145,7 @@ public class Game {
         title.delete();
         start.delete();
         intro.delete();
+        sound.stop();
     }
 
     private void moveGameObject(MovableGameObject object) {
@@ -148,10 +159,15 @@ public class Game {
     }
 
     private void end() {
+        String soundPath = win ? WIN_SOUND : GAME_OVER_SOUND;
         String imgPath = win ? WIN_IMG : GAME_OVER_IMG;
         int imgHeight = win ? WIN_HEIGHT : GAME_OVER_HEIGHT;
         int imgWidth = win ? WIN_WIDTH : GAME_OVER_WIDTH;
         Picture endImg = new Picture((WINDOW_WIDTH - imgWidth) / 2, (WINDOW_HEIGHT - imgHeight) / 2, imgPath);
+        Sound sound = new Sound(soundPath);
+
+        sound.setLoop(-1);
+        sound.play(true);
         endImg.draw();
 
         while (!restart) {
@@ -160,6 +176,7 @@ public class Game {
 
         reset();
         endImg.delete();
+        sound.stop();
     }
 
     private void reset() {

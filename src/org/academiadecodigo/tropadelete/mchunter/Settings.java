@@ -39,6 +39,12 @@ public class Settings {
         public static final String BACKGROUND_IMG = "resources/maps/background.jpg";
         public static final Color BACKGROÛND_COLOR = new Color(41, 191, 161);
         public static final Color WALL_COLOR = new Color(55, 28, 71);
+
+        public static final String INTRO_SOUND = "/resources/sounds/intro.wav";
+        public static final String BACKGROUND_SOUND = "/resources/sounds/background.wav";
+        public static final String GAME_OVER_SOUND = "/resources/sounds/gameover.wav";
+        public static final String WIN_SOUND = "/resources/sounds/win.wav";
+        public static final String PING_SOUND = "/resources/sounds/ping.wav";
     }
 
     public static class Player {
