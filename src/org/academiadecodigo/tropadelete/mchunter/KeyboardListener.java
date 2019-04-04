@@ -5,16 +5,13 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Direction;
-import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
 
 public class KeyboardListener implements KeyboardHandler {
 
     private Game game;
-    private Player player;
 
-    public KeyboardListener(Game game, Player player) {
+    public KeyboardListener(Game game) {
         this.game = game;
-        this.player = player;
     }
 
     public void init() {
@@ -50,33 +47,12 @@ public class KeyboardListener implements KeyboardHandler {
 
     @Override
     public void keyPressed(KeyboardEvent keyboardEvent) {
-
-        switch (keyboardEvent.getKey()) {
-            case KeyboardEvent.KEY_Q:
-                System.exit(1);
-                break;
-            case KeyboardEvent.KEY_P:
-                if (!game.isGameOver()) {
-                    game.switchPause();
-                }
-                break;
-            case KeyboardEvent.KEY_R:
-                if (game.isGameOver()) {
-                    game.setRestart(true);
-                }
-                break;
-            default:
-                if (!game.isPaused()) {
-                    Direction direction = Direction.getDirectionByKey(keyboardEvent.getKey());
-                    player.changeDirection(direction);
-                }
-                break;
-        }
+       game.handleKeyPressed(keyboardEvent.getKey());
 
     }
 
     @Override
     public void keyReleased(KeyboardEvent keyboardEvent) {
-        player.cancelChangeDirection();
+        game.handleKeyReleased(keyboardEvent.getKey());
     }
 }
