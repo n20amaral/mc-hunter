@@ -5,8 +5,8 @@ import org.academiadecodigo.simplegraphics.pictures.Picture;
 import static org.academiadecodigo.tropadelete.mchunter.Settings.Ghost.*;
 
 public class Ghost extends MovableGameObject {
-    public Ghost(Picture sprite, String[] spritePaths) {
-        super(sprite, GHOST_SPEED, spritePaths);
+    public Ghost(Picture[] sprites) {
+        super(GHOST_SPEED, sprites);
     }
 
     public void randomlyChangeDirection(){

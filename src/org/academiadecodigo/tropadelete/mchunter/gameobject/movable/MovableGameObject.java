@@ -1,12 +1,11 @@
 package org.academiadecodigo.tropadelete.mchunter.gameobject.movable;
 
-import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.GameObject;
 
 public abstract class MovableGameObject extends GameObject {
-    private Picture sprite;
-    private String[] spritePaths;
+    private int activeSprite;
+    private Picture[] sprites;
     private int speed;
     private boolean isChangingDirection;
     private Direction currentDirection;
@@ -14,13 +13,13 @@ public abstract class MovableGameObject extends GameObject {
     private int initialX;
     private int initialY;
 
-    public MovableGameObject(Picture sprite, int speed, String[] spritePaths) {
-        super(sprite);
-        this.sprite = sprite;
-        this.spritePaths = spritePaths;
+    public MovableGameObject(int speed, Picture[] sprites) {
+        super(sprites[0]);
+        this.sprites = sprites;
+        this.activeSprite = 0;
         this.speed = speed;
-        this.initialX = sprite.getX();
-        this.initialY = sprite.getY();
+        this.initialX = sprites[activeSprite].getX();
+        this.initialY = sprites[activeSprite].getY();
     }
 
     public void moveToNextDirection() {
@@ -30,7 +29,8 @@ public abstract class MovableGameObject extends GameObject {
 
         currentDirection = nextDirection;
         isChangingDirection = false;
-        sprite.load(spritePaths[nextDirection.ordinal()]);
+
+        updateSprite(nextDirection);
         move();
     }
 
@@ -39,8 +39,8 @@ public abstract class MovableGameObject extends GameObject {
             return;
         }
 
-        sprite.translate(currentDirection.getdX(), currentDirection.getdY());
-        sprite.draw();
+        sprites[activeSprite].translate(currentDirection.getdX(), currentDirection.getdY());
+        sprites[activeSprite].draw();
     }
 
     public void changeDirection(Direction direction) {
@@ -53,12 +53,26 @@ public abstract class MovableGameObject extends GameObject {
         nextDirection = currentDirection;
     }
 
+    private void updateSprite(Direction direction) {
+        int nextSprite = direction.ordinal();
+        int dY = sprites[activeSprite].getY() - sprites[nextSprite].getY();
+        int dX = sprites[activeSprite].getX() - sprites[nextSprite].getX();
+
+        sprites[activeSprite].delete();
+        sprites[nextSprite].translate(dX, dY);
+
+        activeSprite = nextSprite;
+        super.setShape(sprites[activeSprite]);
+    }
+
     public void reset() {
-        int dX = initialX - sprite.getX();
-        int dY = initialY - sprite.getY();
-        sprite.delete();
-        sprite.translate(dX, dY);
-        sprite.draw();
+        int dY = initialY - sprites[activeSprite].getY();
+        int dX = initialX - sprites[activeSprite].getX();
+
+        sprites[activeSprite].delete();
+        sprites[activeSprite].translate(dX, dY);
+        sprites[activeSprite].draw();
+
         hidden = false;
         currentDirection = null;
         nextDirection = null;

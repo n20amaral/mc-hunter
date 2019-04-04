@@ -34,4 +34,8 @@ public abstract class GameObject {
     public boolean isHidden() {
         return hidden;
     }
+
+    protected void setShape(Shape shape) {
+        this.shape = shape;
+    }
 }

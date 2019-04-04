@@ -100,8 +100,6 @@ public class Game {
     }
 
     private void loadBackground() {
-
-
         Picture background = new Picture(PADDING, PADDING, BACKGROUND_IMG);
         background.draw();
         background.grow(PADDING * 4, PADDING * 4);
@@ -109,7 +107,7 @@ public class Game {
         canvas.setColor(BACKGROÛND_COLOR);
         canvas.fill();
     }
-
+    
     private void showInitialScreen() {
         Sound sound = new Sound(INTRO_SOUND);
         Picture title = new Picture((WINDOW_WIDTH - TITLE_WIDTH) / 2, TITLE_HEIGHT * 2, TITLE_IMG);

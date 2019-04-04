@@ -17,31 +17,26 @@ import static org.academiadecodigo.tropadelete.mchunter.Settings.Player.*;
 
 public class GameObjectFactory {
 
-    public Wall[][] createWalls() {
+    public static Wall[][] createWalls() {
         return load(MAP_PATH);
     }
 
-    public List<Ghost> createGhosts() {
+    public static List<Ghost> createGhosts() {
         List<Ghost> ghosts = new LinkedList<>();
 
         for (int i = 0; i < GHOST_SPRITES.length; i++) {
-            Picture sprite = new Picture(GHOST_X + (i * (CELL_SIZE * 2)), GHOST_Y, GHOST_SPRITES[i][0]);
-            sprite.draw();
-            ghosts.add(new Ghost(sprite, GHOST_SPRITES[i]));
+            ghosts.add(new Ghost(loadSprites(GHOST_X + (i * (CELL_SIZE * 2)), GHOST_Y, GHOST_SPRITES[i])));
         }
 
         return ghosts;
     }
 
 
-    public Player createPlayer() {
-
-        Picture sprite = new Picture(PLAYER_X, PLAYER_Y, PLAYER_SPRITES[0]);
-        sprite.draw();
-        return new Player(sprite, PLAYER_SPRITES);
+    public static Player createPlayer() {
+        return new Player(loadSprites(PLAYER_X, PLAYER_Y, PLAYER_SPRITES));
     }
 
-    public static Wall[][] load(String path) {
+    private static Wall[][] load(String path) {
         Wall[][] walls = new Wall[GAME_SIZE][GAME_SIZE];
         BufferedReader reader = null;
 
@@ -73,6 +68,20 @@ public class GameObjectFactory {
             }
         }
         return walls;
+    }
+
+    private static Picture[] loadSprites(int initialX, int initialY, String[] spritePaths) {
+        Picture[] sprites = new Picture[spritePaths.length];
+
+        for (int i = 0; i < sprites.length; i++) {
+            Picture sprite = new Picture(initialX, initialY, spritePaths[i]);
+            if (i == 0) {
+                sprite.draw();
+            }
+            sprites[i] = sprite;
+        }
+
+        return sprites;
     }
 }
 
