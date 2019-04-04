@@ -1,12 +1,11 @@
 package org.academiadecodigo.tropadelete.mchunter;
 
-
-import org.academiadecodigo.simplegraphics.graphics.Canvas;
-import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.pictures.Picture;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.GameObjectFactory;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.Wall;
+import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Direction;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Ghost;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.MovableGameObject;
 import org.academiadecodigo.tropadelete.mchunter.gameobject.movable.Player;
@@ -31,7 +30,7 @@ public class Game {
         loadBackground();
         loadGameObjects();
         collisionDetector = new CollisionDetector(walls);
-        new KeyboardListener(this, player).init();
+        new KeyboardListener(this).init();
     }
 
     public void start() {
@@ -49,7 +48,6 @@ public class Game {
                 sleep();
                 continue;
             }
-
 
             moveGameObject(player);
 
@@ -100,14 +98,45 @@ public class Game {
     }
 
     private void loadBackground() {
+
+
         Picture background = new Picture(PADDING, PADDING, BACKGROUND_IMG);
         background.draw();
         background.grow(PADDING * 4, PADDING * 4);
+
         Rectangle canvas = new Rectangle(PADDING, PADDING, GAME_SIZE * CELL_SIZE, GAME_SIZE * CELL_SIZE);
         canvas.setColor(BACKGROÛND_COLOR);
         canvas.fill();
     }
-    
+
+    public void handleKeyPressed(int key) {
+        switch (key) {
+            case KeyboardEvent.KEY_Q:
+                System.exit(1);
+                break;
+            case KeyboardEvent.KEY_P:
+                if (!gameOver) {
+                    paused = !paused;
+                }
+                break;
+            case KeyboardEvent.KEY_R:
+                if (gameOver) {
+                    restart = true;
+                }
+                break;
+            default:
+                if (!paused) {
+                    Direction direction = Direction.getDirectionByKey(key);
+                    player.changeDirection(direction);
+                }
+                break;
+        }
+    }
+
+    public void handleKeyReleased(int key) {
+        player.cancelChangeDirection();
+    }
+
     private void showInitialScreen() {
         Sound sound = new Sound(INTRO_SOUND);
         Picture title = new Picture((WINDOW_WIDTH - TITLE_WIDTH) / 2, TITLE_HEIGHT * 2, TITLE_IMG);
@@ -196,21 +225,5 @@ public class Game {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public void switchPause() {
-        this.paused = !this.paused;
-    }
-
-    public boolean isPaused() {
-        return paused;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public void setRestart(boolean restart) {
-        this.restart = restart;
     }
 }
